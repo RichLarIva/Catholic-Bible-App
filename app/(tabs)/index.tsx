@@ -1,75 +1,88 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
+import { router } from 'expo-router';
+import { getBooks, Book } from '../../utils/bibleLoader';
+import { loadLastRead } from '../../utils/storage';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+    const [lastRead, setLastRead] = useState<{ book: string; chapter: number } | null>(null);
+    const [dailyVerse, setDailyVerse] = useState<string>('');
+
+    useEffect(() => {
+        loadLastRead().then(setLastRead);
+        pickDailyVerse();
+    }, []);
+
+    const pickDailyVerse = () => {
+        const books = getBooks();
+        const today = new Date();
+        const index = today.getDate() % books.length;
+
+        const book = books[index];
+        const chapter = book.chapters[0];
+        const verse = chapter.verses[0];
+
+        setDailyVerse(`${book.book} ${chapter.chapter}:${verse.verse} — ${verse.text}`);
+    };
+
+    return (
+        <ScrollView contentContainerStyle={styles.container}>
+            <Text style={styles.header}>📖 Welcome to Bible App</Text>
+
+            <Text style={styles.subHeader}>🌞 Daily Verse</Text>
+            <Text style={styles.verseBox}>{dailyVerse}</Text>
+
+            {lastRead ? (
+                <>
+                    <Text style={styles.subHeader}>📌 Last Read</Text>
+                    <Button
+                        title={`Continue ${lastRead?.book} ${lastRead?.chapter}`}
+                        onPress={() => router.push(`/chapters/${book?.book}/${lastRead?.chapter}`)}
+                    />
+                </>
+            ) : undefined}
+
+            <Text style={styles.subHeader}>📚 Browse Books</Text>
+            <>
+                {getBooks().map((book: Book) => (
+                    <View key={book.book} style={styles.buttonWrap}>
+                        <Button
+                            title={book.book}
+                            onPress={() => router.push(`/reader/${book.book}/1`)}
+                        />
+                    </View>
+                ))}
+            </>
+
+        </ScrollView>
+    );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+    container: {
+        padding: 20,
+        gap: 12,
+    },
+    header: {
+        fontSize: 26,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 20,
+    },
+    subHeader: {
+        fontSize: 20,
+        fontWeight: '600',
+        marginTop: 20,
+    },
+    verseBox: {
+        backgroundColor: '#f0f0f0',
+        padding: 12,
+        borderRadius: 10,
+        fontSize: 16,
+    },
+    buttonWrap: {
+        marginVertical: 4,
+    },
 });

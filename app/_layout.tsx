@@ -10,6 +10,10 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+      Cardo: require('../assets/fonts/Cardo-Regular.ttf'),
+      CardoBold: require('../assets/fonts/Cardo-Bold.ttf'),
+      CardoItalic: require('../assets/fonts/Cardo-Italic.ttf'),
+      DayRoman: require('../assets/fonts/day-roman.regular.ttf'),
   });
 
   if (!loaded) {
