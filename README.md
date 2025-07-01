@@ -1,50 +1,108 @@
-# Welcome to your Expo app 👋
+# 📖 Bible Reader App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A cross-platform Bible reader built with [Expo Router](https://expo.github.io/router/), supporting custom fonts, dark/light mode, chapter navigation, and note-taking.
 
-## Get started
+---
 
-1. Install dependencies
+## ✨ Features
+
+- 📚 Browse and read Bible chapters
+- 🌗 Dark and light mode support
+- 📝 Create and manage notes per chapter
+- 🔤 Custom font support (Cardo, Day Roman)
+- 🧭 Tab navigation (Home, Daily, Notes)
+- 📱 Mobile-optimized layout
+
+---
+
+## 🛠️ Tech Stack
+
+- [React Native](https://reactnative.dev/)
+- [Expo Router](https://expo.github.io/router/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Ionicons](https://ionic.io/ionicons)
+- Custom `.ttf` font support
+
+---
+
+## 📁 Folder Structure
+
+```
+
+app/
+├── (tabs)/             # Main tab layout
+│   ├── index.tsx       # Home screen
+│   ├── daily.tsx       # Daily reading screen
+│   ├── notes.tsx       # Notes per chapter
+│   └── \_layout.tsx     # Tab navigation config
+├── \[book]/             # Dynamic book route
+│   └── chapters/       # Chapter view screens
+│       └── \_layout.tsx # Stack layout for chapters
+├── +not-found.tsx      # 404 page
+└── \_layout.tsx         # Root layout
+
+````
+
+---
+
+## 🧑‍💻 Getting Started
+
+1. **Clone the repo:**
+
+   ```bash
+   git clone https://github.com/your-username/bible-reader.git
+   cd bible-reader
+````
+
+2. **Install dependencies:**
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. **Run the app:**
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🔤 Custom Fonts
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+This project uses the following fonts (located in the `fonts/` directory):
 
-## Get a fresh project
+* `Cardo-Regular.ttf`
+* `Cardo-Bold.ttf`
+* `Cardo-Italic.ttf`
+* `day-roman.regular.ttf`
 
-When you're ready, run:
+Fonts are loaded globally via a shared `styles.css` or within the app’s `_layout.tsx`.
 
-```bash
-npm run reset-project
-```
+---
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🌙 Dark/Light Mode
 
-## Learn more
+Supports system dark mode using `useColorScheme()` and conditional theming.
 
-To learn more about developing your project with Expo, look at the following resources:
+---
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 📌 Notes Screen
 
-## Join the community
+Users can write and save notes per book/chapter combo. Notes are currently stored locally.
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 📦 Coming Soon
+
+* 🔄 Cloud sync support (Supabase/Firebase)
+* 🗂 Bookmarks
+* 📖 Reading plans
+* 🌍 Multiple translations
+
+---
+
+## 🪪 License
+
+MIT License © Richard Larsson Ivarsson
+
